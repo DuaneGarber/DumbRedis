@@ -1,0 +1,23 @@
+{
+  "name": "dumbredis",
+  "version": "0.0.1",
+  "description": "This is a mock Redis DB backed only by a JS Object as its store.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DuaneGarber/DumbRedis.git"
+  },
+  "keywords": [
+    "dumb",
+    "db"
+  ],
+  "author": "Duane Garber",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DuaneGarber/DumbRedis/issues"
+  },
+  "homepage": "https://github.com/DuaneGarber/DumbRedis#readme"
+}
