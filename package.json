@@ -5,11 +5,19 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "node tests/*.js | tap-spec"
+    "test": "semistandard && node tests/*.js | tap-spec",
+    "jshint": "jshint -c .jshintrc --exclude-path .gitignore .",
+    "coverage": "istanbul cover tape ./tests/*.js && istanbul check-coverage --statements 90 --functions 100 --lines 90 --branches 80"
   },
+  "pre-commit": [ "jshint", "coverage" ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DuaneGarber/DumbRedis.git"
+  },
+  "semistandard": {
+  "ignore": [
+      "coverage/**"
+    ]
   },
   "keywords": [
     "dumb",
@@ -22,6 +30,9 @@
   },
   "homepage": "https://github.com/DuaneGarber/DumbRedis#readme",
   "devDependencies": {
+    "istanbul": "^0.4.2",
+    "jshint": "^2.9.1",
+    "pre-commit": "^1.1.2",
     "tap-spec": "^4.1.1",
     "tape": "^4.4.0"
   }
