@@ -3,7 +3,7 @@ const test = require('tape');
 const Database = require('../lib/database');
 
 test('Basic DB Testing', function (t) {
-  t.plan(21);
+  t.plan(25);
   let testDb = new Database();
 
   t.equal(testDb.get('doesnotexist'), undefined, 'Getting unregistered key returns undefined');
@@ -39,7 +39,7 @@ test('Basic DB Testing', function (t) {
 
   t.deepEqual(testDb._getDb(), {value1: 10, value2: 20, value3: 10, value4: 10}, 'Data Has been added in the transaction');
 
-  testDb.rollback();
+  t.equal(testDb.rollback(), true, 'Rollback reported successful execution');
   t.equal(testDb.numberEqualTo(10), 1, 'Found 1 Results after rollback');
   t.deepEqual(testDb._getDb(), {value1: 10, value2: 20}, 'Rollback DB is as expected');
 
@@ -49,7 +49,7 @@ test('Basic DB Testing', function (t) {
 
   t.deepEqual(testDb._getDb(), {value1: 10, value2: 20, value5: 30, value6: 40}, 'Data Has been added in the transaction (before commit)');
 
-  testDb.commit();
+  t.equal(testDb.commit(), true, 'Commit reported successful execution');
   t.deepEqual(testDb._getDb(), {value1: 10, value2: 20, value5: 30, value6: 40}, 'Data Has been added in the transaction (after commit)');
 
   testDb.begin();
@@ -68,4 +68,7 @@ test('Basic DB Testing', function (t) {
 
   testDb.rollback();
   t.equal(testDb.get('value5'), 30, 'Value5 is restored to 30');
+
+  t.equal(testDb.commit(), false, 'Commit reported failed execution');
+  t.equal(testDb.commit(), false, 'Rollback reported failed execution');
 });
