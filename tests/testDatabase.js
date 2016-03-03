@@ -3,7 +3,7 @@ const test = require('tape');
 const Database = require('../lib/database');
 
 test('Basic DB Testing', function (t) {
-  t.plan(25);
+  t.plan(26);
   let testDb = new Database();
 
   t.equal(testDb.get('doesnotexist'), undefined, 'Getting unregistered key returns undefined');
@@ -53,11 +53,13 @@ test('Basic DB Testing', function (t) {
   t.deepEqual(testDb._getDb(), {value1: 10, value2: 20, value5: 30, value6: 40}, 'Data Has been added in the transaction (after commit)');
 
   testDb.begin();
-  testDb.set('value5', 50);
+  testDb.del('value5');
+
+  t.deepEqual(testDb._getDb(), {value1: 10, value2: 20, value6: 40}, 'Value5 has been removed');
 
   testDb.begin();
 
-  t.equal(testDb.get('value5'), 50, 'Value5 is set to 50');
+  t.equal(testDb.get('value5'), undefined, 'Value5 is still gone');
   t.equal(testDb.get('value6'), 40, 'Value6 is set inside 2nd transaction');
 
   testDb.del('value6');
@@ -70,5 +72,5 @@ test('Basic DB Testing', function (t) {
   t.equal(testDb.get('value5'), 30, 'Value5 is restored to 30');
 
   t.equal(testDb.commit(), false, 'Commit reported failed execution');
-  t.equal(testDb.commit(), false, 'Rollback reported failed execution');
+  t.equal(testDb.rollback(), false, 'Rollback reported failed execution');
 });
